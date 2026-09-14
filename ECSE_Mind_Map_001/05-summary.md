@@ -20,13 +20,3 @@ Evidence: `remove-node-no-shortcut.png`. Full report: `bug-remove-node-shortcut.
 
 1. `Enter` is bound to "new sibling" but creates a child when the root is selected, since the root has no parent. The key changes meaning with no feedback.
 2. Children of the root are distributed across both sides of the map, leaving no clear reading order for a set of notes.
-
-## What held up
-
-Persistence of map content is sound. Node text, fold state, icons and bold all survived a full quit and reopen, verified in the saved XML rather than by eye. A 9,996 character single-line paste stored complete with no truncation, no freeze, and the map remained navigable. See `long-node-wraps.png`.
-
-## Coverage
-
-Testing went deep on persistence and text fidelity. Unicode entry, rich text paste, notes, images, hyperlinks, find, zoom, export, import, print, browse mode and encryption were identified in the capability outline but not exercised, so no claim is made about them.
-
-One question remains open on bug 2: whether Edit Long Node preserves the line breaks the plain node editor destroys. If it does, a workaround exists. If not, multi-line text cannot be entered at all.

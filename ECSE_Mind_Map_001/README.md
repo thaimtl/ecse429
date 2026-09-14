@@ -13,8 +13,7 @@ Tested against FreeMind 1.0.1 on macOS 26.5.1 / arm64 / JDK 21.
 
 | File | What it is |
 |---|---|
-| [05-summary.md](05-summary.md) | **Read this first.** Findings, in order of severity |
-| [04-session-notes.txt](04-session-notes.txt) | Full session sheet: charter, metrics, capability outline, running notes, bugs, issues |
+| [04-session-notes.txt](04-session-notes.txt) | **Read this first.** Session sheet: observations, bugs, issues |
 | [02-test-plan.md](02-test-plan.md) | How the session was scoped and why coverage was ordered this way |
 | [03-run-sheet.md](03-run-sheet.md) | What was tested |
 | [01-freemind-macos-setup.md](01-freemind-macos-setup.md) | How the application was made to run at all, see note below |

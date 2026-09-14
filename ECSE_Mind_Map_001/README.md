@@ -1,3 +1,6 @@
+# Tester
+Thai Tran - 261233478
+
 # ECSE_Mind_Map_001 - Exploratory Testing of FreeMind
 
 **Charter.** Identify capabilities and areas of potential instability of FreeMind.

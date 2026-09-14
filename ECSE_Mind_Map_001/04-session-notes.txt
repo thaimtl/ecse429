@@ -1,0 +1,76 @@
+CHARTER: ECSE_Mind_Map_001
+-----------------------------------------------
+Identify capabilities and areas of potential instability of Freemind.
+Exercise each capability identified with data typical to the intended use
+of the application. The intended use of the application is to enable
+testers to take testing notes using a Mind Map.
+
+
+ENVIRONMENT
+-----------------------------------------------
+macOS 26.5.1 (arm64) / FreeMind 1.0.1 / OpenJDK 21
+The bundled Java 7 cannot render text on this OS, so the app was
+repointed at JDK 21 before testing. See 01-freemind-macos-setup.md.
+
+
+DATA FILES
+-----------------------------------------------
+ECSE 429 FreeMind testing.mm
+
+
+NOTES
+-----------------------------------------------
+
+Findings were verified against the saved .mm XML rather than by eye. This
+ruled out one suspected defect (an icon thought missing had simply been
+added after the save) and confirmed another that looked cosmetic on
+screen but was permanent data loss.
+
+Persistence is sound. Node text, fold state, icons and bold all survive a
+full quit and reopen.
+
+A single unbroken line of 9,996 characters pasted without freeze or lag,
+stored complete with no truncation, and the map stayed navigable. The
+node wraps into a block tall enough to dominate the map.
+See long-node-wraps.png.
+
+Six lines of shell output pasted into a node had every line break
+replaced by a single space. No newline is stored in the saved file in any
+encoding, so the loss occurs at paste time and is unrecoverable. Spacing
+within each line survives, which makes the damage easy to miss.
+
+Tab and Enter do not determine which side of the root a child lands on.
+Saved POSITION attributes run right, right, left, left, right, left, so
+FreeMind balances children by count.
+
+A node created and then abandoned is still written to file with TEXT="".
+
+Reopening a saved map restored the note panel over the entire window,
+blocking access to the map.
+
+
+BUGS
+-----------------------------------------------
+1) Reopening a saved map restores the note panel filling the whole
+   window, leaving the map pane no height and no way to recover from
+   inside the application. Caused by split_pane_position in
+   auto.properties being restored without validation. Blocking.
+   See bug-note-panel-buries-map.txt.
+
+2) Pasting multi-line text into a node silently discards all line breaks.
+   The newlines are absent from the saved file, so the loss is permanent.
+   See bug-multiline-paste-flattened.txt.
+
+3) "Remove Node" in the context menu displays a keyboard shortcut, but no
+   key press invokes it. Node removal requires the mouse.
+   See bug-remove-node-shortcut.txt.
+
+
+ISSUES
+-----------------------------------------------
+1) Enter is labelled "new sibling" but creates a child when the root is
+   selected, because the root cannot have siblings. No feedback is given
+   that the action differed from the one requested.
+
+2) Children of the root are split across both sides of the map. For
+   note-taking this makes reading order ambiguous.

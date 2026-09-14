@@ -1,0 +1,41 @@
+Pre Conditions
+- macOS 26.5.1 / arm64 / FreeMind 1.0.1 / JDK 21
+- A previously saved map
+- ~/.freemind/auto.properties holds a split pane divider position that
+  leaves the map pane no height
+
+Steps to Reproduce
+- Open a saved map
+- The note panel (Layout view / HTML Code view) is restored occupying the
+  entire window
+- The map pane is reduced to zero height and is not visible
+
+Bug Description
+- The map cannot be reached. The split divider is pinned against the top
+  edge and cannot be grabbed, Escape does nothing, and the documented
+  panel toggle Cmd+Shift+< has no effect.
+- There is no in-application recovery. The only way out is to quit
+  FreeMind and edit split_pane_position in ~/.freemind/auto.properties
+  by hand.
+- FreeMind restores the saved divider position without validating that it
+  leaves the map pane usable, and rewrites the file on exit, so quitting
+  and relaunching alone does not clear the bad state.
+
+Relevant persisted state:
+    split_pane_position=959
+    split_pane_last_position=-1
+    JSplitPane.SPLIT_TYPE=vertical_split_below
+
+Frequency
+- Observed once on reopening a saved map. Deterministic while the stored
+  divider position remains bad, since it is restored on every launch.
+
+Productivity Impact
+- Blocking. The document is unreachable and the session cannot continue
+  without editing a configuration file outside the application.
+
+Notes
+- Screenshot: note-panel-covers-map.png
+- Recovered with:
+    sed -i '' 's/^split_pane_position=.*/split_pane_position=700/' \
+        ~/.freemind/auto.properties

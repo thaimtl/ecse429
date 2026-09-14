@@ -1,0 +1,38 @@
+Pre Conditions
+- macOS 26.5.1 / arm64 / FreeMind 1.0.1 / JDK 21
+- Multi-line text on the clipboard, for example shell output or a stack trace
+
+Steps to Reproduce
+- Copy several lines of text, e.g. the output of  ls -la ~/.freemind
+- In FreeMind select a node and press F2 to edit it
+- Press Cmd+V to paste
+- Press Enter to commit
+- Save the map and inspect the .mm file
+
+Bug Description
+- Every line break in the pasted text is replaced by a single space. The
+  text becomes one continuous run, wrapped only by node width.
+- The loss happens at paste time, not at render time. The saved XML holds
+  no newline in any form: no literal newline, no &#10;, no &#xa;. The
+  structure cannot be recovered from the file afterwards.
+- Run-on spacing within a line is preserved, so the column alignment
+  survives while the line structure does not. The result is misleading,
+  because the text looks deliberately formatted but the shape is wrong.
+- No warning is given that the clipboard content was altered.
+
+Verified by measuring the stored TEXT attribute directly:
+    stored length  334
+    literal \n     0
+    &#10;          0
+    &#xa;          0
+
+Frequency
+- Occurs every time
+
+Productivity Impact
+- High for the intended use of this application. Pasting log output,
+  stack traces or terminal transcripts into testing notes is routine, and
+  those are exactly the inputs whose meaning depends on line structure.
+
+Notes
+- Screenshot: multiline-paste-flattened.png
